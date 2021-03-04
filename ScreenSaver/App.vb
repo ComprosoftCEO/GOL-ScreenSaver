@@ -1,21 +1,27 @@
 ﻿Module App
+    ''' <summary>
+    ''' ScreenSaver app entry point
+    ''' </summary>
     <STAThread()> _
     Public Sub Main(ByVal args As String())
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
+        Application.DoEvents()
 
         ' Handle cases where arguments are separated by colon.
         ' Examples: /c:1234567 or /P:1234567
         If args.Length > 0 Then
-  
+
             Dim firstArgument As String = args(0).ToLower().Trim()
             Dim secondArgument As String = Nothing
             ParseArguments(args, firstArgument, secondArgument)
 
             If firstArgument = "/c" Then
+                'Settings Form
                 Application.Run(New SettingsForm())
 
             ElseIf firstArgument = "/p" Then
+                'Preview Mode
                 If secondArgument Is Nothing Then
                     MessageBox.Show("Sorry, but the expected window handle was not provided.",
                                     "ScreenSaver", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -26,8 +32,10 @@
                 Application.Run(New ScreenSaverForm(previewWndHandle))
 
             ElseIf firstArgument = "/s" Then
+                'Full-screen Mode
                 ShowScreenSaver()
                 Application.Run()
+
             Else
                 'Undefined arguments
                 MessageBox.Show("Sorry, but the command line argument """ + firstArgument + """ is not valid.",

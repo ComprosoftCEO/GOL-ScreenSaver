@@ -22,8 +22,14 @@ Public Class ScreenSaverForm
     End Function
 #End Region
 
-    Private mouseLocation As Point
+    Private mouseLocation As Point = Nothing
     Private previewMode As Boolean = False
+    Private life As Life = New Life(PreBuiltLifeRules.randomRule(), 200, 200)
+
+    Private randomBG As Boolean = False
+    Private randomFG As Boolean = True
+    Private generation As Integer = 0
+    Private delayGenerations As Integer = 1000
 
     Private Const MOUSE_THRESHHOLD = 5
 
@@ -39,7 +45,6 @@ Public Class ScreenSaverForm
         ' Set the preview window as the parent of this window
         SetParent(Me.Handle, previewWndHandle)
 
-
         ' Make this a child window so it will close when the parent dialog closes
         ' GWL_STYLE = -16, WS_CHILD = 0x40000000
         SetWindowLong(Me.Handle, -16, New IntPtr(GetWindowLong(Me.Handle, -16) Or &H40000000))
@@ -50,16 +55,46 @@ Public Class ScreenSaverForm
         Me.Size = parentRect.Size
         Me.Location = New Point(0, 0)
 
+        ' Don't kill the application in preview mode
         Me.previewMode = True
     End Sub
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.LoadSettings()
+        Me.randomize()
 
+        ' Make it fullscreen
         Cursor.Hide()
         Me.TopMost = True
+
+        ' Optimize the repaint
+        Me.SetStyle(ControlStyles.UserPaint, True)
+        Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+
+        ' Start the timer
+        PaintTimer.Start()
     End Sub
 
+    ''' <summary>
+    ''' Load all of the settings from the registry
+    ''' </summary>
+    Private Sub LoadSettings()
+        Dim key = Registry.CurrentUser.CreateSubKey(REGISTRY_KEY)
+
+        Me.randomBG = CType(key.GetValue(RANDOM_BG_KEY, False), Boolean)
+        Me.randomFG = CType(key.GetValue(RANDOM_FG_KEY, True), Boolean)
+
+        If Not randomBG Then
+            Me.life.BgColor = Color.FromArgb(key.GetValue(BG_COLOR_KEY, &HFFFFFFFFF))
+        End If
+
+        If Not randomFG Then
+            Me.life.FgColor = Color.FromArgb(key.GetValue(FG_COLOR_KEY, &H0))
+        End If
+
+        Me.delayGenerations = key.GetValue(DELAY_GENERATIONS_KEY, 1000)
+    End Sub
 
 #Region "Handle Hide Screen Saver"
 
@@ -88,13 +123,47 @@ Public Class ScreenSaverForm
     End Sub
 #End Region
 
-    Private Sub LoadSettings()
-        Dim key = Registry.CurrentUser.CreateSubKey(REGISTRY_KEY)
-        If key Is Nothing OrElse CType(key.GetValue("randomRule"), Boolean) Then
-            Me.BackColor = Color.Aqua
+
+
+
+#Region "Handle Drawing Code"
+    Private Sub ScreenSaverForm_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+        e.Graphics.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+        e.Graphics.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
+        e.Graphics.DrawImage(life.Image, 0, 0, Me.Width, Me.Height)
+    End Sub
+
+    Private Sub PaintTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PaintTimer.Tick
+        Me.generation += 1
+        If Me.generation > Me.delayGenerations Then
+            Me.randomize()
         Else
-            Me.BackColor = Color.Coral
+            Me.life.nextGeneration()
+            GenerationLabel.Text = "Generation: " + Me.generation.ToString()
+        End If
+
+        Me.Refresh()
+    End Sub
+
+    Private Sub randomize()
+        Me.generation = 0
+        GenerationLabel.Text = "Generation: " + Me.generation.ToString()
+
+        Me.life.Rule = PreBuiltLifeRules.randomRule()
+        Me.life.randomizeGrid()
+        RuleLabel.Text = life.Rule.toString()
+
+        If Me.randomBG Then
+            Me.life.BgColor = pickRandomColor()
+        End If
+        If Me.randomFG Then
+            Me.life.FgColor = pickRandomColor()
         End If
     End Sub
 
+    Private Function pickRandomColor() As Color
+        Dim rand As New Random
+        Return Color.FromArgb(255, rand.Next() Mod 255, rand.Next() Mod 255, rand.Next() Mod 255)
+    End Function
+#End Region
 End Class
