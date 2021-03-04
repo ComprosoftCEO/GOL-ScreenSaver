@@ -50,7 +50,7 @@ Partial Class ScreenSaverForm
         Me.GenerationLabel.BackColor = System.Drawing.Color.Black
         Me.GenerationLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GenerationLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GenerationLabel.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.GenerationLabel.ForeColor = System.Drawing.Color.Cyan
         Me.GenerationLabel.Location = New System.Drawing.Point(13, 64)
         Me.GenerationLabel.Name = "GenerationLabel"
         Me.GenerationLabel.Size = New System.Drawing.Size(2, 28)
