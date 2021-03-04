@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("ScreenSaver")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("ScreenSaver")> 
+<Assembly: AssemblyTitle("Game of Life ScreenSaver")> 
+<Assembly: AssemblyDescription("ScreenSaver that simulates Conway's Game of Life")> 
+<Assembly: AssemblyCompany("Comprosoft")> 
+<Assembly: AssemblyProduct("Game of Life ScreenSaver")> 
 <Assembly: AssemblyCopyright("Copyright ©  2021")> 
 <Assembly: AssemblyTrademark("")> 
 

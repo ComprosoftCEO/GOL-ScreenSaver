@@ -33,12 +33,17 @@ Public Class ScreenSaverForm
 
     Private Const MOUSE_THRESHHOLD = 5
 
-
+    ''' <summary>
+    ''' Construct a form for normal fullscreen mode
+    ''' </summary>
     Public Sub New(ByVal Bounds As Rectangle)
         InitializeComponent()
         Me.SetBounds(Bounds.Left, Bounds.Top, Bounds.Width, Bounds.Height)
     End Sub
 
+    ''' <summary>
+    ''' Construct a form for preview mode
+    ''' </summary>
     Public Sub New(ByVal previewWndHandle As IntPtr)
         InitializeComponent()
 
@@ -55,8 +60,10 @@ Public Class ScreenSaverForm
         Me.Size = parentRect.Size
         Me.Location = New Point(0, 0)
 
-        ' Don't kill the application in preview mode
+        ' Settings specific for preview mode
         Me.previewMode = True
+        RuleLabel.Visible = False
+        GenerationLabel.Visible = False
     End Sub
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
