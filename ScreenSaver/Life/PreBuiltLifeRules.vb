@@ -1,5 +1,9 @@
-﻿Module PreBuiltLifeRules
-    Private ReadOnly RAND As New Random()
+﻿Imports Microsoft.Win32
+
+''' <summary>
+''' A bunch of pre-build rules for the game of life
+''' </summary>
+Module PreBuiltLifeRules
     Private ReadOnly PRE_BUILT_RULES As LifeRule() = {
         New LifeRule("Amoeba", {3, 5, 7}, {1, 3, 5, 8}),
         New LifeRule("Anneal", {4, 6, 7, 8}, {3, 5, 6, 7, 8}),
@@ -24,8 +28,24 @@
         New LifeRule("34", {3, 4}, {3, 4})
     }
 
-    Public Function randomRule() As LifeRule
-        Return New LifeRule("Life", {3}, {2, 3})
-        'Return PRE_BUILT_RULES(RAND.Next() Mod PRE_BUILT_RULES.Length)
-    End Function
+    ''' <summary>
+    ''' Load the default life rules into the registry if no rules currently exist
+    ''' </summary>
+    Public Sub maybeCreateDefaultLifeRules(ByVal parentKey As RegistryKey)
+        Dim rulesKey = parentKey.OpenSubKey("Rules")
+        If rulesKey Is Nothing Then
+            rulesKey = parentKey.CreateSubKey("Rules")
+
+            Dim index As Integer = 0
+            For Each rule As LifeRule In PRE_BUILT_RULES
+                Dim subKey = rulesKey.CreateSubKey(index.ToString())
+                Dim ruleEntry = New RegistryRuleEntry(rule)
+
+                ruleEntry.saveToRegistry(subKey)
+                subKey.SetValue(RULE_ENABLED_KEY, True)
+
+                index += 1
+            Next
+        End If
+    End Sub
 End Module

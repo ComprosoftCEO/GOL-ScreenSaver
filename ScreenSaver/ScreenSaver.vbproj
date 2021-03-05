@@ -91,10 +91,23 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditRuleDialog.Designer.vb">
+      <DependentUpon>EditRuleDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="EditRuleDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Life\Life.vb" />
     <Compile Include="Life\LifeRule.vb" />
     <Compile Include="Life\PreBuiltLifeRules.vb" />
-    <Compile Include="RegistryConfig.vb" />
+    <Compile Include="Registry\RegistryConfig.vb" />
+    <Compile Include="Registry\RegistryRuleEntry.vb" />
+    <Compile Include="RuleSetControl.Designer.vb">
+      <DependentUpon>RuleSetControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="RuleSetControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ScreenSaverForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +140,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EditRuleDialog.resx">
+      <DependentUpon>EditRuleDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RuleSetControl.resx">
+      <DependentUpon>RuleSetControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ScreenSaverForm.resx">
       <DependentUpon>ScreenSaverForm.vb</DependentUpon>
     </EmbeddedResource>

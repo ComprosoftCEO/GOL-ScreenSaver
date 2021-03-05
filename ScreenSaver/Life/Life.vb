@@ -7,6 +7,8 @@
     Private _fgColor As Color = Color.White
     Private _bgColor As Color = Color.Black
 
+    Public Const CELL_WIDTH As Integer = 10
+
     Public Sub New(ByVal rule As LifeRule, ByVal width As UInteger, ByVal height As UInteger)
         Me.Rule = rule
 
@@ -65,7 +67,7 @@
         Dim rand = New Random()
         For x = 0 To Me.Width - 1
             For y = 0 To Me.Height - 1
-                Me.grid(x, y) = (rand.NextDouble > 0.6)
+                Me.grid(x, y) = (rand.NextDouble() > 0.7)
             Next
         Next
 
@@ -114,20 +116,20 @@
     End Function
 
     Private Sub buildNextImage()
-        Dim image = New Bitmap(Me.Width, Me.Height)
+        Dim image = New Bitmap(Me.Width * CELL_WIDTH, Me.Height * CELL_WIDTH)
         Dim g = Graphics.FromImage(image)
 
-        Dim fgPen = New Pen(Me.FgColor)
+        Dim fgBrush = New SolidBrush(Me.FgColor)
         Dim bgBrush = New SolidBrush(Me.BgColor)
 
         ' Clear the grid
         g.FillRectangle(bgBrush, 0, 0, image.Width, image.Height)
 
         ' Draw the life cells
-        For x = 0 To image.Width - 1
-            For y = 0 To image.Height - 1
+        For x = 0 To Me.Width - 1
+            For y = 0 To Me.Height - 1
                 If Me.grid(x, y) Then
-                    g.DrawRectangle(fgPen, x, y, 1, 1)
+                    g.FillRectangle(fgBrush, x * CELL_WIDTH, y * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH)
                 End If
             Next
         Next
