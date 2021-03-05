@@ -107,11 +107,11 @@ Public Class ScreenSaverForm
         Me.randomFG = CType(key.GetValue(RANDOM_FG_KEY, True), Boolean)
 
         If Not randomBG Then
-            Me.life.BgColor = Color.FromArgb(key.GetValue(BG_COLOR_KEY, &HFFFFFFFFF))
+            Me.life.BgColor = Color.FromArgb(key.GetValue(BG_COLOR_KEY, &HFF000000))
         End If
 
         If Not randomFG Then
-            Me.life.FgColor = Color.FromArgb(key.GetValue(FG_COLOR_KEY, &H0))
+            Me.life.FgColor = Color.FromArgb(key.GetValue(FG_COLOR_KEY, &HFFFFFFFF))
         End If
 
         Me.delayGenerations = key.GetValue(DELAY_GENERATIONS_KEY, 1000)

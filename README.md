@@ -7,7 +7,7 @@ Game of Life Screensaver written in Visual Basic
 
 ![Screen Saver](img/ScreenSaver.png)
 
-This scrensaver is based on the tutorial [Creating a Screen Saver with C#][https://sites.harding.edu/fmccown/screensaver/screensaver.html].
+This scrensaver is based on the tutorial [Creating a Screen Saver with C#](https://sites.harding.edu/fmccown/screensaver/screensaver.html).
 It was programmed using Microsoft Visual Basic 2010 Express Edition, but it should compile and run in later versions.
 Once you build the program using Visual Studio, you need to rename the file `ScreenSaver/bin/Release/ScreenSaver.exe` from `ScreenSaver.exe` to `ScreenSaver.scr`.
 Then, you should be able to right-click the file and install the screensaver program.

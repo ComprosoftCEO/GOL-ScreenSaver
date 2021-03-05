@@ -50,8 +50,8 @@ Public Class SettingsForm
             LifeRandomRadioButton.Checked = randomFg
             LifeColorRadioButton.Checked = Not randomFg
 
-            BGColorBtn.BackColor = Color.FromArgb(key.GetValue(BG_COLOR_KEY, &HFFFFFFFFF))
-            LifeColorBtn.BackColor = Color.FromArgb(key.GetValue(FG_COLOR_KEY, &H0))
+            BGColorBtn.BackColor = Color.FromArgb(key.GetValue(BG_COLOR_KEY, &HFF000000))
+            LifeColorBtn.BackColor = Color.FromArgb(key.GetValue(FG_COLOR_KEY, &HFFFFFFFF))
             DelayNumericUpDown.Value = key.GetValue(DELAY_GENERATIONS_KEY, 1000)
 
             'Load all of the rules
